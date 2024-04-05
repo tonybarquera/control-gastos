@@ -1,3 +1,5 @@
+import BudgetForm from "./components/BudgetForm"
+
 function App() {
   return (
     <>
@@ -6,7 +8,7 @@ function App() {
       </header>
 
       <div className="max-w-4xl mx-5 lg:mx-auto bg-white shadow-lg rounded-lg mt-10 p-10">
-
+        <BudgetForm />
       </div>
     </>
   )

@@ -1,7 +1,14 @@
 import { ChangeEvent, useState, useMemo } from "react";
+import { useBudget } from "../hooks/useBudget";
 
 function BudgetForm() {
-  const [ budget, setBudget ] = useState(0);
+  const [ budget, setBudget ] = useState(0); // local state
+  const { dispatch } = useBudget(); // context
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch({ type: 'add-budget', payload: { budget } });
+  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setBudget(+e.target.value);
@@ -12,7 +19,7 @@ function BudgetForm() {
   },[budget]);
 
   return (
-    <form className="space-y-5">
+    <form className="space-y-5" onSubmit={handleSubmit}>
       <div className="flex flex-col space-y-5">
         <label htmlFor="budget" className="text-4xl text-blue-600 font-bold text-center">Definir Presupuesto</label>
         <input type="number" name="budget" id="budget" className="w-full bg-white border border-gray-200 p-2 rounded" placeholder="Define tu presupuesto" value={budget} onChange={handleChange}/>

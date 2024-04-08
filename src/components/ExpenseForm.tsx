@@ -1,4 +1,10 @@
 import { categories } from "../data/categories";
+import DatePicker from 'react-date-picker';
+import 'react-calendar/dist/Calendar.css';
+import 'react-date-picker/dist/DatePicker.css';
+
+type ValuePiece = Date | null;
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 function ExpenseForm() {
   return (
@@ -23,6 +29,13 @@ function ExpenseForm() {
             <option key={category.id} value={category.id}>{category.name}</option>
           ))}
         </select>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label htmlFor="date" className="text-xl">Fecha Gasto:</label>
+        <DatePicker 
+          className="bg-slate-200 p-2 border-0"
+        />
       </div>
 
       <input type="submit" value="Registrar Gasto" className="bg-blue-600 cursor-pointer w-full p-2 text-white uppercase font-bold rounded-lg" />

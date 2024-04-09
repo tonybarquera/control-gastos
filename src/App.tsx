@@ -21,7 +21,7 @@ function App() {
       </div>
 
       { isValidBudget && (
-        <main className="max-w-3xl py-10 mx-auto px-5">
+        <main className="max-w-4xl mx-5 py-10 lg:mx-auto">
           <ExpenseList />
           <ExpenseModal />
         </main>

@@ -1,5 +1,6 @@
 import { v4 as uuid4 } from 'uuid';
 import { Category, DraftExpense, Expense } from "../types";
+import { Reducer } from 'react';
 
 export type BudgetActions = 
   { type: 'add-budget', payload: { budget: number } } |
@@ -45,7 +46,7 @@ const createExpense = (draftExpense: DraftExpense) : Expense => {
   };
 }
 
-export const budgetReducer = (
+export const budgetReducer: Reducer<BudgetState, BudgetActions> = (
   state: BudgetState = initialState,
   action: BudgetActions
 ) => {
@@ -106,10 +107,9 @@ export const budgetReducer = (
 
   if(action.type === 'remove-budget') {
     return {
+      ...state,
       budget: 0,
-      modal: false,
-      expenses: [],
-      editingId: ''
+      expenses: []
     }
   }
 
@@ -119,4 +119,6 @@ export const budgetReducer = (
       currentCategory: action.payload.id
     }
   }
+
+  return state;
 }

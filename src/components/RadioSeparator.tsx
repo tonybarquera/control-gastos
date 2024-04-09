@@ -1,6 +1,24 @@
 import _ from "lodash";
 
-function Separator(props) {
+type RadialSeparatorsProps = {
+  count: number,
+  style: {
+    background?: string,
+    height?: string,
+    width?: string
+  }
+}
+
+type SeparatorProps = {
+  turns: number,
+  style: {
+    background?: string,
+    height?: string,
+    width?: string
+  }
+}
+
+function Separator(props: SeparatorProps) {
   return (
     <div
       style={{
@@ -14,7 +32,7 @@ function Separator(props) {
   );
 }
 
-function RadialSeparators(props) {
+function RadialSeparators(props: RadialSeparatorsProps) {
   const turns = 1 / props.count;
   return _.range(props.count).map(index => (
     <Separator turns={index * turns} style={props.style} />

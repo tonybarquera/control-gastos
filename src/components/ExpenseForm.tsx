@@ -2,7 +2,7 @@ import { categories } from "../data/categories";
 import DatePicker from 'react-date-picker';
 import 'react-calendar/dist/Calendar.css';
 import 'react-date-picker/dist/DatePicker.css';
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { DraftExpense, Value } from "../types";
 import ErrorMessage from "./ErrorMessage";
 import { useBudget } from "../hooks/useBudget";
@@ -16,7 +16,14 @@ function ExpenseForm() {
   });
   const [ error, setError ] = useState('');
 
-  const { dispatch } = useBudget();
+  const { dispatch, state } = useBudget();
+
+  useEffect(() => {
+    if(state.editingId) {
+      const editingExpense = state.expenses.filter(expense => expense.id === state.editingId)[0];
+      setExpense(editingExpense);
+    }
+  }, [state.editingId, state.expenses]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -43,7 +50,11 @@ function ExpenseForm() {
       return;
     }
 
-    dispatch({ type: 'add-expense', payload: { expense: expense } });
+    if(state.editingId) {
+      dispatch({ type: 'update-expense', payload: { expense: { id: state.editingId, ...expense } } });
+    } else {
+      dispatch({ type: 'add-expense', payload: { expense: expense } });
+    }
 
     setExpense({
       amount: 0,
@@ -55,7 +66,7 @@ function ExpenseForm() {
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
-      <legend className="uppercase text-center text-2xl font-bold border-b-4 border-blue-500 py-2">Nuevo Gasto</legend>
+      <legend className="uppercase text-center text-2xl font-bold border-b-4 border-blue-500 py-2">{state.editingId ? 'Guardar Cambios' : 'Nuevo Gasto' }</legend>
 
       { error && <ErrorMessage>{error}</ErrorMessage> }
 
@@ -88,7 +99,7 @@ function ExpenseForm() {
         />
       </div>
 
-      <input type="submit" value="Registrar Gasto" className="bg-blue-600 cursor-pointer w-full p-2 text-white uppercase font-bold rounded-lg" />
+      <input type="submit" value={state.editingId ? 'Guardar Cambios' : 'Nuevo Gasto' } className="bg-blue-600 cursor-pointer w-full p-2 text-white uppercase font-bold rounded-lg" />
     </form>
   )
 }

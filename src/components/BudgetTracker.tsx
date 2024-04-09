@@ -1,12 +1,8 @@
 import AmountDisplay from "./AmountDisplay";
 import { useBudget } from "../hooks/useBudget";
-import { useMemo } from "react";
 
 function BudgetTracker() {
-  const { state } = useBudget();
-
-  const totalExpenses = useMemo(() => state.expenses.reduce((total, expense) => total + expense.amount, 0), [state.expenses]);
-  const remainingBudget = state.budget - totalExpenses;
+  const { state, remainingBudget, totalExpenses } = useBudget();
 
   return (
     <>

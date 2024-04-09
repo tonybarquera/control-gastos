@@ -16,7 +16,7 @@ function ExpenseForm() {
   });
   const [ error, setError ] = useState('');
 
-  const { dispatch, state } = useBudget();
+  const { dispatch, state, remainingBudget } = useBudget();
 
   useEffect(() => {
     if(state.editingId) {
@@ -47,6 +47,13 @@ function ExpenseForm() {
 
     if(Object.values(expense).includes('')) {
       setError('Todos los campos son obligatorios');
+      return;
+    }
+
+    const previousAmount = state.editingId ? state.expenses.filter(expense => expense.id === state.editingId)[0].amount : 0;
+
+    if(expense.amount > remainingBudget + previousAmount) {
+      setError('Se ha rebasado el presupuesto');
       return;
     }
 

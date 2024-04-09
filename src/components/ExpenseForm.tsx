@@ -5,6 +5,7 @@ import 'react-date-picker/dist/DatePicker.css';
 import React, { ChangeEvent, useState } from "react";
 import { DraftExpense, Value } from "../types";
 import ErrorMessage from "./ErrorMessage";
+import { useBudget } from "../hooks/useBudget";
 
 function ExpenseForm() {
   const [ expense, setExpense ] = useState<DraftExpense>({
@@ -14,6 +15,8 @@ function ExpenseForm() {
     date: new Date
   });
   const [ error, setError ] = useState('');
+
+  const { dispatch } = useBudget();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -40,7 +43,7 @@ function ExpenseForm() {
       return;
     }
 
-
+    dispatch({ type: 'add-expense', payload: { expense: expense } });
   }
 
   return (
